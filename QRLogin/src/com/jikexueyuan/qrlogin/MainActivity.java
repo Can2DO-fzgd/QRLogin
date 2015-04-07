@@ -1,5 +1,8 @@
 package com.jikexueyuan.qrlogin;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import com.zxing.activity.CaptureActivity;
 
 import android.app.Activity;
@@ -16,10 +19,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private Button btnScan;
 	private EditText etUsername;
+	private String s;
 
 	//改成PC端相应地址
-	private static final String WEB_URL = "http://192.168.1.102/platform/qrlogin/";
-
+	//private static final String WEB_URL = "http://192.168.1.102/platform/qrlogin/";
+	private static final String WEB_URL = "http://192.168.0.108/platform/qrlogin/";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +33,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		btnScan = (Button) findViewById(R.id.btnScan);
 		btnScan.setOnClickListener(this);
 		etUsername = (EditText) findViewById(R.id.etUsername);
+		
 	}
 
 	@Override
@@ -43,10 +49,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (resultCode == Activity.RESULT_OK) {
 			String randnumber = data.getExtras().getString("result");
 			String username = etUsername.getText().toString();
+			//try {
+				//s = URLEncoder.encode(username, "utf-8");
+				//s = new String(username.getBytes("GBK"),"UTF-8");
+			//} catch (UnsupportedEncodingException e) {
+				//e.printStackTrace();
+			//}
 			String url = WEB_URL + "saveUsername.php?randnumber=" + randnumber
 					+ "&username=" + username;
-			//String url = WEB_URL + "saveUsername.php?randnumber=" + "98429120"
-			//		+ "&username=" + randnumber;
+			
 			//访问url
 			HttpUtils.login(url);
 		}
